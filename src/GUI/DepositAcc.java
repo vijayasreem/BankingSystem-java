@@ -71,51 +71,49 @@ public class DepositAcc extends JFrame implements Serializable {
 		JButton btnDeposit = new JButton("Deposit");
 		btnDeposit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//FileIO file=new FileIO();
-				//Bank bank =file.Read();
-				String aacountNum;
-				double amt;
-				aacountNum=textField.getText();
-				amt=Double.parseDouble(textField_1.getText());
-				int a=JOptionPane.showConfirmDialog(getComponent(0), "Confirm?");
-				if(a==0)
-				{
-				try {
-					
-						
-						FileIO.bank.deposit(aacountNum, amt);
-						JOptionPane.showMessageDialog(getComponent(0),"Deposit Successful");
-						dispose();
-					
-						textField.setText(null);
-						textField_1.setText(null);
-					
-				} 
-				catch (InvalidAmount e1) {
-					JOptionPane.showMessageDialog(getComponent(0), "Sorry! Deposit Amount is Invalid");
-					
-				} catch (AccNotFound e1) {
-					JOptionPane.showMessageDialog(getComponent(0), "Sorry! Account is Not Found");
-					
-				}
-				finally
-				{
-					//file.Write(bank);
-					textField.setText(null);
-					textField_1.setText(null);
+				String accountNum = textField.getText();
+				double amount = Double.parseDouble(textField_1.getText());
+				
+				// Document Verification
+				boolean isIdentityVerified = verifyIdentity(accountNum);
+				boolean isAddressVerified = verifyAddress(accountNum);
+				
+				if (!isIdentityVerified || !isAddressVerified) {
+					JOptionPane.showMessageDialog(getComponent(0), "Document verification is incomplete. Not eligible for banking services.");
+					return;
 				}
 				
-					
-				}
-				else
-				{
-					textField.setText(null);
-					textField_1.setText(null);
+				// Credit Evaluation
+				double annualIncome = getAnnualIncome(accountNum);
+				int creditScore = getCreditScore(accountNum);
+				
+				if (annualIncome >= 30000 && creditScore >= 700) {
+					JOptionPane.showMessageDialog(getComponent(0), "Congratulations! You are eligible for a credit score with a high limit.");
+				} else if (annualIncome >= 20000 && creditScore >= 600) {
+					JOptionPane.showMessageDialog(getComponent(0), "You are eligible for a credit score with a moderate limit.");
 				}
 				
-					
-					
+				// Disbursement
+				double disbursedAmount = getDisbursedAmount(accountNum);
+				double vehicleAssessmentValue = getVehicleAssessmentValue(accountNum);
 				
+				if (disbursedAmount <= vehicleAssessmentValue) {
+					JOptionPane.showMessageDialog(getComponent(0), "Vehicle assessment passed. Disbursed Amount: $" + disbursedAmount);
+				} else {
+					JOptionPane.showMessageDialog(getComponent(0), "Vehicle assessment failed. Loan amount cannot exceed vehicle value.");
+				}
+				
+				// Payment Approval
+				double paymentAmount = getPaymentAmount(accountNum);
+				
+				if (paymentAmount <= 1000.0) {
+					JOptionPane.showMessageDialog(getComponent(0), "Payment approved. Disbursement process successful.");
+				} else {
+					JOptionPane.showMessageDialog(getComponent(0), "Payment approval required. Please grant payment approval.");
+				}
+				
+				textField.setText(null);
+				textField_1.setText(null);
 			}
 		});
 		btnDeposit.setBounds(73, 212, 89, 23);
@@ -127,10 +125,44 @@ public class DepositAcc extends JFrame implements Serializable {
 		
 		btnReset.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			
 				textField.setText(null);
 				textField_1.setText(null);
 			}
 		});
+	}
+	
+	private boolean verifyIdentity(String accountNum) {
+		// Code to verify identity using provided input
+		return true; // Placeholder
+	}
+	
+	private boolean verifyAddress(String accountNum) {
+		// Code to verify address using provided input
+		return true; // Placeholder
+	}
+	
+	private double getAnnualIncome(String accountNum) {
+		// Code to get annual income based on account number
+		return 0.0; // Placeholder
+	}
+	
+	private int getCreditScore(String accountNum) {
+		// Code to get credit score based on account number
+		return 0; // Placeholder
+	}
+	
+	private double getDisbursedAmount(String accountNum) {
+		// Code to determine disbursed amount based on account number
+		return 0.0; // Placeholder
+	}
+	
+	private double getVehicleAssessmentValue(String accountNum) {
+		// Code to get vehicle assessment value based on account number
+		return 0.0; // Placeholder
+	}
+	
+	private double getPaymentAmount(String accountNum) {
+		// Code to get payment amount based on account number
+		return 0.0; // Placeholder
 	}
 }
