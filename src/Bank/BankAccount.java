@@ -1,6 +1,7 @@
 package Bank;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import Exceptions.MaxBalance;
 import Exceptions.MaxWithdraw;
@@ -91,9 +92,49 @@ public class BankAccount implements Serializable {
             System.out.println("Payment approved.");
             System.out.println("Vendor: " + vendorName);
             System.out.println("Payment Amount: $" + paymentAmount);
+            
+            // Send confirmation email/SMS
+            sendConfirmationNotification(paymentAmount, vendorName, new Date(), "Reference ID");
         } else {
             System.out.println("Payment not approved. Please provide payment approval.");
+            
+            // Send notification to provide approval
+            sendApprovalNotification(vendorName, paymentAmount);
         }
+    }
+    
+    private void sendConfirmationNotification(double paymentAmount, String vendorName, Date date, String referenceId) {
+        // Code to send confirmation notification via email/SMS
+        System.out.println("Confirmation Notification:");
+        System.out.println("Payment Status: Approved");
+        System.out.println("Vendor: " + vendorName);
+        System.out.println("Payment Amount: $" + paymentAmount);
+        System.out.println("Date: " + date);
+        System.out.println("Reference ID: " + referenceId);
+        
+        // Log payment confirmation notification
+        logNotification("Confirmation", "Approved", vendorName, paymentAmount, date, referenceId);
+    }
+    
+    private void sendApprovalNotification(String vendorName, double paymentAmount) {
+        // Code to send notification to provide approval
+        System.out.println("Approval Notification:");
+        System.out.println("Please provide payment approval for Vendor: " + vendorName);
+        System.out.println("Payment Amount: $" + paymentAmount);
+        
+        // Log payment confirmation notification
+        logNotification("Approval", "Not Approved", vendorName, paymentAmount, new Date(), "Reference ID");
+    }
+    
+    private void logNotification(String type, String status, String vendorName, double paymentAmount, Date date, String referenceId) {
+        // Code to log payment confirmation notification
+        System.out.println("Logging Notification:");
+        System.out.println("Type: " + type);
+        System.out.println("Status: " + status);
+        System.out.println("Vendor: " + vendorName);
+        System.out.println("Payment Amount: $" + paymentAmount);
+        System.out.println("Date: " + date);
+        System.out.println("Reference ID: " + referenceId);
     }
     
     @Override
