@@ -1,7 +1,13 @@
 package Bank;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.DefaultListModel;
+
 import Exceptions.AccNotFound;
 import Exceptions.InvalidAmount;
 import Exceptions.MaxBalance;
@@ -13,6 +19,7 @@ public class Bank implements Serializable {
      */
     private static final long serialVersionUID = 1L;
     private BankAccount[] accounts = new BankAccount[100];
+    private List<DisbursementLog> disbursementLogs = new ArrayList<>();
 
     public int addAccount(BankAccount acc) {
         int i = 0;
@@ -143,10 +150,19 @@ public class Bank implements Serializable {
         if (disbursedAmount <= vehicleAssessmentValue) {
             System.out.println("Vehicle assessment passed.");
             System.out.println("Disbursed Amount: $" + disbursedAmount);
+            logDisbursement(disbursedAmount, vehicleAssessmentValue, "Passed");
         } else {
             System.out.println("Vehicle assessment failed.");
             System.out.println("Loan amount cannot exceed vehicle value.");
+            logDisbursement(disbursedAmount, vehicleAssessmentValue, "Failed");
         }
+    }
+
+    private void logDisbursement(double disbursedAmount, double vehicleAssessmentValue, String status) {
+        LocalDateTime dateTime = LocalDateTime.now();
+        String user = "User"; // Placeholder for user
+        DisbursementLog log = new DisbursementLog(dateTime, user, disbursedAmount, vehicleAssessmentValue, status);
+        disbursementLogs.add(log);
     }
 
     public void createMethodForPaymentApproval(double paymentAmount) {
@@ -189,4 +205,76 @@ public class Bank implements Serializable {
         this.accounts = accounts;
     }
 
+    public List<DisbursementLog> getDisbursementLogs() {
+        return disbursementLogs;
+    }
+
+    public void setDisbursementLogs(List<DisbursementLog> disbursementLogs) {
+        this.disbursementLogs = disbursementLogs;
+    }
+
+    public class DisbursementLog {
+        private LocalDateTime dateTime;
+        private String user;
+        private double disbursedAmount;
+        private double vehicleValue;
+        private String status;
+
+        public DisbursementLog(LocalDateTime dateTime, String user, double disbursedAmount, double vehicleValue,
+                String status) {
+            this.dateTime = dateTime;
+            this.user = user;
+            this.disbursedAmount = disbursedAmount;
+            this.vehicleValue = vehicleValue;
+            this.status = status;
+        }
+
+        public LocalDateTime getDateTime() {
+            return dateTime;
+        }
+
+        public void setDateTime(LocalDateTime dateTime) {
+            this.dateTime = dateTime;
+        }
+
+        public String getUser() {
+            return user;
+        }
+
+        public void setUser(String user) {
+            this.user = user;
+        }
+
+        public double getDisbursedAmount() {
+            return disbursedAmount;
+        }
+
+        public void setDisbursedAmount(double disbursedAmount) {
+            this.disbursedAmount = disbursedAmount;
+        }
+
+        public double getVehicleValue() {
+            return vehicleValue;
+        }
+
+        public void setVehicleValue(double vehicleValue) {
+            this.vehicleValue = vehicleValue;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        @Override
+        public String toString() {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedDateTime = dateTime.format(formatter);
+            return "Date/Time: " + formattedDateTime + ", User: " + user + ", Disbursed Amount: " + disbursedAmount
+                    + ", Vehicle Value: " + vehicleValue + ", Status: " + status;
+        }
+    }
 }
