@@ -1,0 +1,45 @@
+
+<trigger>
+  <moduleType>DEQC_SEARCH</moduleType>
+  <title>Reject Applications from DEQC_SEARCH Module</title>
+  <acceptanceCriteria>
+    <criteria>When the "Reject" button is pressed, the system should:</criteria>
+    <actions>
+      <action>Navigate to the DEQC_DISPLAY module and count the number of records.</action>
+      <action>Loop through each record and check if the 'ch' field is marked as 'Y'.</action>
+      <action>If 'ch' is 'Y', append the application number to a list and increment a counter.</action>
+      <action>If the 'reason_link' field is empty or a specific package variable is zero, prompt the user to enter comments and halt the process.</action>
+      <action>Call a procedure to auto-reject the application.</action>
+      <action>Attempt to retrieve the contract ID from the azbj_batch_items table based on the application number and transaction type.</action>
+      <action>If the 'reason_link' field is not empty, insert a new comment into the azbj_uw_comments table with the appropriate details.</action>
+      <action>Commit the transaction.</action>
+      <action>Display a message indicating the number of records rejected and the list of rejected application numbers.</action>
+    </actions>
+  </acceptanceCriteria>
+  <definitionOfDone>
+    <criteria>The "Reject" button functionality is implemented and tested.</criteria>
+    <criteria>The system correctly navigates, processes records, and handles exceptions as described.</criteria>
+    <criteria>Appropriate messages are displayed to the user.</criteria>
+    <criteria>All database operations (select, insert) are performed correctly and committed.</criteria>
+    <criteria>DB queries for Table reference CRUD operations only (With Usage):</criteria>
+    <queries>
+      <query>Retrieve contract ID:</query>
+      <sql>
+        <![CDATA[
+        SELECT CONT_ID INTO :control.contract_id 
+        FROM azbj_batch_items 
+        WHERE APPLICATION_NO = :deqc_display.application_number 
+          AND TRANSACTION_TYPE = 'FRP';
+        ]]>
+      </sql>
+      <query>Insert new comment:</query>
+      <sql>
+        <![CDATA[
+        INSERT INTO azbj_uw_comments
+                   (event_no, contract_id, policy_no, move_code, policy_status, user_id, comment_date, comments, flag)
+        VALUES     (v_event_no, :control.contract_id, :deqc_display.proposal_no, 'AZBJ_WEB_OTC', azbj_pkg_var.v_mst, USER, SYSDATE, :deqc_saerch.reason_link, 'N');
+        ]]>
+      </sql>
+    </queries>
+  </definitionOfDone>
+</trigger>

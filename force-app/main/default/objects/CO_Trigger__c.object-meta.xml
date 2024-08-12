@@ -1,0 +1,56 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <name>DEQC_SEARCH__c</name>
+    <label>DEQC_SEARCH</label>
+    <pluralLabel>DEQC_SEARCHs</pluralLabel>
+    <nameField>
+        <label>DEQC_SEARCH Name</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <fields>
+        <fullName>Reject__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>Reject</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+</CustomObject>
+
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <name>DEQC_DISPLAY__c</name>
+    <label>DEQC_DISPLAY</label>
+    <pluralLabel>DEQC_DISPLAYs</pluralLabel>
+    <nameField>
+        <label>DEQC_DISPLAY Name</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <fields>
+        <fullName>ch__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <label>ch</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>reason_link__c</fullName>
+        <externalId>false</externalId>
+        <label>reason_link</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </fields>
+    <fields>
+        <fullName>Application_Number__c</fullName>
+        <externalId>false</externalId>
+        <label>Application_Number</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </fields>
+</CustomObject>
